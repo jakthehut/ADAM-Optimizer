@@ -1,30 +1,32 @@
-\documentclass[journal, letterpaper]{IEEEtran}
+\documentclass[journal]{IEEEtran}
 
 
-\usepackage{graphicx}\usepackage{url}        
-\usepackage{amsmath}    
-\usepackage{textgreek}	% Greek to me, dawg
-\usepackage{listings}
-\usepackage{csvsimple}
-\usepackage{longtable}
-
-
-
-
-
-
+\usepackage{graphicx}\usepackage{url}  % code reduction referencing pictures 
+\usepackage{amsmath}  % Complies math
+\usepackage{fancyhdr}  % Headers and footers
+\usepackage{hyperref}  % Enable Hyperlinks
 
 
 \begin{document}
 
 \begin{titlepage}
    \begin{center}
-       \vspace*{1cm}
-
-       \textbf{Adaptive Movement Estimation Algorithm (ADAM)}
-
-       \vspace{0.5cm}
+        \vfill
+        Report for Final Project\\
+        Class Optimization\\
+        Professor Imre Fekete
+        \vfill\noindent\hrulefill \\
+        \vspace*{1cm}
+        \textbf{\huge ADAM}\\
+        \vspace{0.2cm}
+        \textbf{\huge Adaptive Movement Estimation Algorithm }
+        \vspace{0.5cm}
+        \\
         Thesis Subtitle
+        
+        \noindent\hrulefill \\
+
+       
             
        \vspace{1.5cm}
 
@@ -32,12 +34,10 @@
 
        \vfill
             
-       Report for Final Project\\
-       Class Optimization\\
-       Professor Imre Fekete
+       
             
        \vspace{2cm}
-       BsC Data Science and Society\\
+       BSc Data Science and Society\\
        Central European University\\
        Quellenstraße 51, 1100 Vienna, Austria\\
        31st of March 2024\\
@@ -47,17 +47,51 @@
             
    \end{center}
 \end{titlepage}
-\markboth{ADAM Optimizer}{}
+
+% FOOTER AND HEADER SETTINGS
+\pagestyle{fancy}
+\headheight = 25pt
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\fancyhead[C]{Adaptive Movement Estimation Algorithm \\ \nouppercase{\leftmark\hfill\rightmark}}
+\newpage
+
+% TABLE of Content
+\tableofcontents 
+\vspace{1.5cm}
+
+% ABSTRACT
 \begin{abstract}
-    JUHU
+    This will be the best Abstract Ever 
 \end{abstract}
 
-
+% START PAPER here
 \section{Introduction}
-Starting	
+\begin{itemize}
+    \item What is ADAM
+    \item What is ADAM used for
+    \item Preview for this paper
+\end{itemize}
 
 
+% MATH PART
+\section{The Algorithm}
+Algorithm builds on gradient descent\\
+for adam see paper \href{https://arxiv.org/abs/1412.6980}{link}
+\subsection{Gradient Descent}
+explain gradient descent
+\subsection{ADAM}
 
+
+%PRATICAL EXAMPLE
+\section{Computational Implementation}
+\subsection{Hyperparameters}
+Explain the hyperparameters that can be chosen, when each is effectfull
+\subsection{Example Impleementation}
+Insert Code
+
+% COMPARISON
+\section{Performance Comparison}
 
  
 \section{Conclusion}
@@ -68,23 +102,12 @@ Ending
 
 % CODE FOR APPENDIX
 \onecolumn
-\textwidth=456pt
-\paperwidth=577pt
-\hoffset=-30pt
 \newpage
-\newpage
-\clearpage
-\pagestyle{headings}
-
-
+\pagestyle{fancy}
 
 \section{Appendix A}
-\centering C++ Code
-\footnotesize
-\begin{lstlisting}
-% APPENDIX
-\end{lstlisting}
-\normalsize
-\pagestyle{headings}
+\centering TITLE
+
+
 
 \end{document}
