@@ -162,23 +162,33 @@ Therfore ADAM builds on GD and SDG algorithm:
     \item Efficiency on Large Datasets: Similar to SGD, ADAM works well with mini-batches, making it suitable for training on large datasets. The adaptive nature of the algorithm helps to speed up convergence compared to SGD and traditional GD.
     \item Robustness: The algorithm's design makes it less sensitive to the choice of hyperparameters, particularly the initial learning rate. This robustness simplifies the tuning process, which can be quite challenging with other optimization algorithms.
 \end{itemize}
-In practice, ADAM is often the go-to optimizer for training deep neural networks due to its effectiveness across a wide range of tasks and its ability to handle the complexities of large-scale and high-dimensional optimization problems commonly encountered in deep learning. The details of the mathematics and algorithm of ADAM are examined in the next chapter. Furthermore, the following chapters will also look at examples, proving the differences in the performance of GD, SDG and ADAM that where mentioned in this section.
+In practice, ADAM is frequently the preferred optimizer for training deep neural networks owing to its efficacy across a broad spectrum of tasks and its capacity to manage the intricacies of large-scale and high-dimensional optimization problems that are typically encountered in deep learning. The mathematical details and the algorithmic foundation of ADAM will be scrutinized in the subsequent chapter. Moreover, ensuing chapters will explore examples, thereby demonstrating the distinctions in performance among Gradient Descent, Stochastic Gradient Descent, and ADAM that were discussed in this section.
 
 
 \section{The ADAM Algorithm}
-This section will investigate the mathematics and principles of function of ADAM. This achieved by elabarting on ADAMs adaption of Learning Rate adaption as well as the Momentum Method, which distinguish ADAM from other Optimizers. After that two modules are highlighted as part of the whole algorithm.\\
-At this point we also want to define:
-
-
-
+This section delves into the mathematics and underlying principles of ADAM's operation. This exploration is facilitated by elaborating on ADAM's adoption of learning rate adaptation along with the momentum method, their combination distinguishes ADAM from other optimizers. Subsequently, the complete algorithm will be explained.\\
+Important defintions for:
+\begin{itemize}
+    \item $t:=$ Iteration step in the algorithm
+    \item $\theta:=$ Initial Parameter vector
+    \item $f(\theta):=$ Stochastic objective function with parameters $\theta$
+    \item $g_t:\nable_\theta f_t(\theta_{t-1})$ being the gradient at $t$
+    \item $\beta_1, \beta_2 \in [0,1) :=$ exponential decay rates for the moment estimates
+\end{itemize}
 
 \subsection{Momentum Method}
-The Momentum Method 
+The Momentum Method is applied in ADAM to accelerate convergence. Compared to the conventional gradient descent the total change in parameters is found iteratively as a combination of the current gradient and past gradients. \\\\
+\includegraphics[width=0.45\textwidth]{report/figures/GD_momentum.png}\\
+The figure illustrates, on the left, how conventional gradient descent converges towards the minimum of the depicted quadratic function. On the right, one can observe gradient descent enhanced with momentum. Although the initial step is similar for both methods, the subsequent steps differ markedly. In the case of gradient descent alone, only the current gradient is considered as the slope. However, when employing gradient descent with momentum, the direction for the next step is determined by an accumulation of the current gradient and the previous gradients, resulting in a steeper descent as the first gradient slopes upwards.\\
+In ADAM the learning rate is manipulated via the first moment estimate. The biased form is defined as $$m_t=m_{t-1}\cdot \beta_1 + g_t\cdot (1-\beta_1)$$
 
-\includegraphics[width=0.8\textwidth]{}
+2. explain how adam uses it
+
 
 
 \subsection{Adaptive Learning Rate}
+1. explain adaptive learning rate
+2. explain how adam utilizes it
 To potentially escape local minima, ADAM utilizes an adaptive learning rate method, similar to the AdaGrad optimizer. Therefore the updated biased second raw moment estimate is being utilized. Which is defined as vector $v_t$.\\
 
 The so called $2^{nd}$ moment is calculated as:
