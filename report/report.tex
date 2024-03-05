@@ -5,6 +5,7 @@
 \usepackage{amsmath}  % Complies math
 \usepackage{fancyhdr}  % Headers and footers
 \usepackage{hyperref}  % Enable Hyperlinks
+\usepackage{algpseudocode}  % for writing pseude code
 
 
 \begin{document}
@@ -12,9 +13,12 @@
 \begin{titlepage}
    \begin{center}
         \vfill
-        Report for Final Project\\
-        Class Optimization\\
-        Professor Imre Fekete
+        \textit{Report for Final Project}\\
+        \textit{In Class Optimization}\\
+        \vspace{0.5cm}
+        Advisors:\\
+        \textit{Assistant Professor Imre Fekete}\\
+        \textit{TA MsC Sebastian Kusch}
         \vfill\noindent\hrulefill \\
         \vspace*{1cm}
         \textbf{\huge ADAM}\\
@@ -22,7 +26,7 @@
         \textbf{\huge Adaptive Movement Estimation Algorithm }
         \vspace{0.5cm}
         \\
-        Thesis Subtitle
+        Optimization of Machine Learning
         
         \noindent\hrulefill \\
 
@@ -67,22 +71,140 @@
 
 % START PAPER here
 \section{Introduction}
+
 \begin{itemize}
-    \item What is ADAM
+    \item what is adam
+      for adam introduction paper click \href{https://arxiv.org/abs/1412.6980}{link}
     \item What is ADAM used for
     \item Preview for this paper
 \end{itemize}
 
 
-% MATH PART
-\section{The Algorithm}
-Algorithm builds on gradient descent\\
-for adam see paper \href{https://arxiv.org/abs/1412.6980}{link}
+% Highlight differences to other Gradient DEscents
+\section{Optimization Algorithms}
+ADAM builds upon Stochastic Gradient Descent (SDG). Therefore, this section explains the algorithm of Gradient Descent (GD) and then SGD before introducing ADAM.
 \subsection{Gradient Descent}
-explain gradient descent
+Gradient Descent is an optimization algorithm utilized for minimizing the loss function. In the context of a Neural Network application, Gradient Descent updates the model's parameters (for example, weights) by moving them in the direction opposite to the gradient of the loss function with respect to those parameters, with the objective of minimizing the loss.  \\
+A commonly employed metaphor is that of a hiker in the mountains, which represent the landscape of the loss function. The hiker's goal is to reach the lowest valley within the mountain range, where the loss is minimal; at the mountain peaks, the loss is maximal, and in the valleys, it is lowest. The challenge for the hiker arises in bad weather conditions, where visibility of both the peak and the valley is obstructed. In this scenario, Gradient Descent aids the hiker by calculating the direction from their current position where the mountain has the steepest downward gradient. By repeatedly following the direction of the gradient, the hiker will eventually reach a valley, which corresponds to a local minimum of the loss function. \\
+
+\subsubsection{Application in Neural Networks}
+Introducing the notion of parameters:
+\begin{itemize}
+    \item \( \theta \): The parameters of the model.
+    \item \( \alpha \): The learning rate, a small positive scalar determining the size of the steps. It's crucial for convergence: too small, and the optimization is slow; too large, and you may overshoot the minimum.
+    \item \( \nabla_\theta J(\theta) \): The gradient of the loss function \( J \) with respect to the parameters \( \theta \). This gradient points in the direction of the steepest increase of \( J \); hence, moving against it leads to the steepest decrease.
+\end{itemize}
+This is the formula of gradient descent to update the gradient at the current point:
+\[ \theta = \theta - \alpha \nabla_\theta J(\theta) \]
+
+In the context of neural networks, GD therefore adjusts the weights and biases in a way that minimizes the difference between the predicted output and the actual output (the loss). Here's a simplified view of the process:
+\begin{enumerate}
+    \item  Initialization:\\
+    Start with random weights and biases for your neural network.
+    \item  Forward Pass: \\
+    Input data through the network and compute the output.
+    \item  Compute Loss: \\
+    Use a loss function to calculate the error between the predicted output and the actual output.
+    \item  Backward Pass (Backpropagation):\\
+    Calculate the gradient of the loss function concerning each weight and bias in the network. This is where calculus comes into play, as you're essentially finding out how to tweak the weights and biases to reduce the loss.
+    \item  Update Parameters:\\
+    Adjust the weights and biases in the opposite direction of their gradients to minimize the loss, using the learning rate to scale the size of the update.
+    \item  Repeat: \\
+    Repeat steps 2-5 for many iterations (epochs) until the loss converges to a minimum value, indicating that the model's predictions are as accurate as possible with the given architecture and data.
+\end{enumerate}
+
+By iteratively applying Gradient Descent, neural networks can be trained to execute predictions or classifications with notable accuracy. This methodology is fundamental to the training phase of machine learning and deep learning models. However, to address this limitation, we will explore Stochastic Gradient Descent as an enhancement in the subsequent section.
+
+
 \subsection{Stochastic Gradient Descent}
+Stochastic Gradient Descent (SGD) is a variation of the basic GD algorithm that introduces randomness in the optimization process to achieve faster convergence and potentially escape local minima.\\
+In the standard GD, you calculate the gradient of the loss function using the entire dataset to make a single update to the parameters. This approach, while effective, can be slow and computationally expensive for large datasets, as you need to process all data points before making even a small step in parameter space.\\
+SGD modifies this process by updating the model's parameters using only a single data point ( or a small batch of data points) at a time. Here's how it works in steps:
+\begin{enumerate}
+    \item Randomly Shuffle the Dataset: \\
+    Initially, the data is shuffled to ensure that the order does not affect the optimization.
+    \item Select One Data Point (Stochastic) or a Small Batch (Mini-batch SGD): \\
+    Instead of using the entire dataset to compute the gradient of the loss function, select a single data point (for pure SGD) or a small subset of the data (for mini-batch SGD).
+    \item Compute the Gradient: \\
+    Calculate the gradient of the loss function with respect to the parameters, but only for the selected data point or batch. This gradient is an estimate of the gradient over the entire dataset.
+    \item Update the Parameters: \\
+    Use this estimated gradient to update the model's parameters, similar to the basic GD formula:
+    \[ \theta = \theta - \alpha \nabla_\theta J(\theta; x^{(i)}, y^{(i)}) \]
+    Here, \(x^{(i)}\) and \(y^{(i)}\) represent the input features and the target output of the selected data point(s), respectively.
+    \item Repeat: \\
+    Continue this process, iterating through the dataset in small increments (single data points or batches), updating the model's parameters each time till $\theta$ converges.
+\end{enumerate}
+
+
+This change from GD to SDG brings multiple advantages:
+\begin{itemize}
+    \item Faster Convergence: \\
+    By updating the parameters more frequently, SGD can converge faster to the minimum of the loss function, especially for large datasets.
+    \item Reduced Memory Usage: \\
+    Since only a small portion of the data is used at each step, SGD requires less memory, making it feasible to train on large datasets that don't fit entirely in memory.
+    \item Potential to Escape Local Minima: \\
+    The inherent noise and randomness in selecting data points or batches can help the optimization process escape from local minima, potentially leading to better solutions that might be missed by standard GD.
+\end{itemize}
+SGD and its variants are widely used for training neural networks due to their efficiency and effectiveness, especially when dealing with large datasets. The ability to make frequent updates and the potential to escape local minima make SGD particularly suited for the complex loss landscapes typical of deep learning. Adjusting the learning rate and batch size allows for flexibility in balancing the trade-offs between convergence speed, computational resource usage, and training stability.
+
+
 \subsection{ADAM}
-what it separates from others
+ADAM is another optimization algorithm that is widely used in training machine learning models. It combines ideas from two other extensions of stochastic gradient descent (SGD): RMSprop (Root Mean Square Propagation) and Momentum. ADAM adjusts the learning rate for each parameter dynamically, based on estimates of the gradients' first (mean) and second (uncentered variance) moments. This approach helps to converge faster and more efficiently than SGD, especially in the context of large datasets and complex neural network architectures.\\
+Therfore ADAM builds on GD and SDG algorithm:
+\begin{itemize}
+    \item GD updates the parameters of the model using the gradient of the loss function calculated over the entire dataset. This can be slow and computationally expensive for large datasets.
+    \item SGD, including its mini-batch variant, updates parameters using the gradient calculated from a single sample or a small batch of samples. This introduces noise, which can help escape local minima but may also lead to convergence issues.
+    \item ADAM builds upon the stochastic nature of SGD but incorporates adaptive learning rates and momentum. It keeps an exponentially decaying average of past gradients (momentum) and squared gradients (scaling factor), which helps in adjusting the learning rate for each parameter. This makes ADAM particularly effective for problems with sparse gradients or in settings where the sensitivity of the parameters varies widely.
+\end{itemize}
+ In comparison to GD and SDG ADAM is particularly useful in deep learning for several reasons:
+\begin{itemize}
+    \item Adaptive Learning Rates: By adjusting the learning rate for each parameter, ADAM can effectively handle sparse gradients and different scales of sensitivity in the parameters. This is beneficial for models with a large number of parameters and complex architectures.
+    \item Efficiency on Large Datasets: Similar to SGD, ADAM works well with mini-batches, making it suitable for training on large datasets. The adaptive nature of the algorithm helps to speed up convergence compared to SGD and traditional GD.
+    \item Robustness: The algorithm's design makes it less sensitive to the choice of hyperparameters, particularly the initial learning rate. This robustness simplifies the tuning process, which can be quite challenging with other optimization algorithms.
+\end{itemize}
+In practice, ADAM is often the go-to optimizer for training deep neural networks due to its effectiveness across a wide range of tasks and its ability to handle the complexities of large-scale and high-dimensional optimization problems commonly encountered in deep learning. The details of the mathematics and algorithm of ADAM are examined in the next chapter. Furthermore, the following chapters will also look at examples, proving the differences in the performance of GD, SDG and ADAM that where mentioned in this section.
+
+
+\section{The ADAM Algorithm}
+This section will investigate the mathematics and principles of function of ADAM. This achieved by elabarting on ADAMs adaption of Learning Rate adaption as well as the Momentum Method, which distinguish ADAM from other Optimizers. After that two modules are highlighted as part of the whole algorithm.\\
+At this point we also want to define:
+
+
+
+
+\subsection{Momentum Method}
+The Momentum Method 
+
+\includegraphics[width=0.8\textwidth]{}
+
+
+\subsection{Adaptive Learning Rate}
+To potentially escape local minima, ADAM utilizes an adaptive learning rate method, similar to the AdaGrad optimizer. Therefore the updated biased second raw moment estimate is being utilized. Which is defined as vector $v_t$.\\
+
+The so called $2^{nd}$ moment is calculated as:
+$$v_t = v_{t-1} \cdot \beta_2 + g_t^2 \cdot (1-\beta_2)$$
+
+This represents the moving average of the biased uncentered variance of the gradient.\\
+The principle to know here is that the larger the last gradients of a certain weight value is, the smaller that weight's learning rate is going to be. Meaning that the higher $v$ the smaller the step size, because the loss function is more sensetive at this point. On the other hand the lower $v$ the bigger the step size, because the loss function is less sensetive at this point.\\
+The vector $v_t$ is inizalized as $v_0$ being a vector of zeros. This creates biases, to remove the bias $v_t$ in every step is corrected as the following:
+$$\hat{v_t}=\frac{v_t}{1-\beta_2^t}$$
+Details for bias correction can be found in the intial paper \textit{ADAM: A Method for Stochastic Optimization} from 2015.
+
+\subsection{The algorithm}
+\begin{algorithmic}
+    \If{$i\geq 5$} 
+        \State $i \gets i-1$
+    \Else
+        \If{$i\leq 3$}
+            \State $i \gets i+2$
+        \EndIf
+    \EndIf 
+\end{algorithmic}
+
+
+
+
+
 
 
 %PRATICAL EXAMPLE
@@ -94,7 +216,7 @@ Explain the hyperparameters that can be chosen, when each is effectfull
 \subsection{Example Impleementation}
 Insert Code
 
-% COMPARISON
+% COMPARISON of performance
 \section{Performance Comparison}
 
  
@@ -110,8 +232,29 @@ Ending
 \pagestyle{fancy}
 
 \section{Appendix A}
-\centering TITLE
+\section*{Intuitive Explanation of ADAM}
+Imagine you're playing a video game where you need to find a treasure hidden deep within a maze. The maze is foggy, so you can't see the whole layout from where you are. Your goal is to find the treasure in the least amount of time, with some areas being slippery or uphill, making your journey tougher or easier based on where you step. Here's how ADAM helps you navigate this challenge, akin to how it helps a machine learn
 
+\subsubsection*{The Basics of Moving Around}
+In this game, you have a magic map (the algorithm) that helps you decide every move (how to adjust the model's parameters) to get to the treasure (minimize the error in predictions).
+
+\subsubsection*{Remembering Your Steps}
+As you start moving, you realize that some paths you took were really good, making it easier to move forward, while others were not so great. ADAM, like a smart assistant, remembers these steps. It keeps track of your recent moves, emphasizing the better ones (this is similar to the "momentum" part of ADAM, which helps to keep moving in a good direction based on past gradients).
+
+\subsubsection*{Adjusting Your Pace}
+Some parts of the maze are slippery (easy to move fast) or uphill (hard to move). ADAM notices this and adjusts your pace accordingly. If it's slippery, it makes you take smaller steps to avoid overshooting the target, and if it's uphill, it encourages bigger steps to speed up the journey. This is like ADAM adjusting the learning rate for each parameter based on the past gradients' squared values, making sure you progress at the right speed without missing the treasure.
+
+\subsubsection*{Getting Smarter Over Time}
+The magic map gets better the longer you use it. It learns from every step you've taken, making smarter suggestions about which direction to go next. This is akin to how ADAM corrects its estimates to become more accurate over time, ensuring that the adjustments it suggests for your steps (the learning rates) are getting more and more effective.  
+   
+\subsubsection*{Finding the Treasure}
+By remembering the good paths, adjusting your pace based on the terrain, and getting smarter over time, ADAM helps you navigate the maze efficiently and find the treasure faster than if you were just wandering around or using a less sophisticated map. This is similar to how ADAM optimizes a machine learning model's parameters to make accurate predictions or decisions, effectively "finding the treasure" in the form of the best solution to a problem. 
+  
+In summary, ADAM is like a highly intelligent guide for navigating through complex challenges, helping you reach your goal efficiently by learning from past experiences and adjusting your approach as you go.
+
+\section{Appendix B}
+\centering Source Code
+All Notebooks and Visualizations including detailed code can be found in our GITHUB Repository with the link: \href{https://github.com/jakthehut/ADAM-Optimizer}{https://github.com/jakthehut/ADAM-Optimizer}
 
 
 \end{document}
