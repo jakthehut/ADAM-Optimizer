@@ -167,12 +167,12 @@ In practice, ADAM is frequently the preferred optimizer for training deep neural
 
 \section{The ADAM Algorithm}
 This section delves into the mathematics and underlying principles of ADAM's operation. This exploration is facilitated by elaborating on ADAM's adoption of learning rate adaptation along with the momentum method, their combination distinguishes ADAM from other optimizers. Subsequently, the complete algorithm will be explained.\\
-Important defintions for:
+\textbf{Relevant Definitions:}
 \begin{itemize}
     \item $t:=$ Iteration step in the algorithm
-    \item $\theta:=$ Initial Parameter vector
+    \item $\theta:=$ Initial Parameter vector, in terms of neural networks the weights in vector form
     \item $f(\theta):=$ Stochastic objective function with parameters $\theta$
-    \item $g_t:\nable_\theta f_t(\theta_{t-1})$ being the gradient at $t$
+    \item $g_t= \nabla_{\theta} f_t(\theta_{t-1})$ being the gradient at $t$  
     \item $\beta_1, \beta_2 \in [0,1) :=$ exponential decay rates for the moment estimates
 \end{itemize}
 
@@ -180,13 +180,16 @@ Important defintions for:
 The Momentum Method is applied in ADAM to accelerate convergence. Compared to the conventional gradient descent the total change in parameters is found iteratively as a combination of the current gradient and past gradients. \\\\
 \includegraphics[width=0.45\textwidth]{report/figures/GD_momentum.png}\\
 The figure illustrates, on the left, how conventional gradient descent converges towards the minimum of the depicted quadratic function. On the right, one can observe gradient descent enhanced with momentum. Although the initial step is similar for both methods, the subsequent steps differ markedly. In the case of gradient descent alone, only the current gradient is considered as the slope. However, when employing gradient descent with momentum, the direction for the next step is determined by an accumulation of the current gradient and the previous gradients, resulting in a steeper descent as the first gradient slopes upwards.\\
-In ADAM the learning rate is manipulated via the first moment estimate. The biased form is defined as $$m_t=m_{t-1}\cdot \beta_1 + g_t\cdot (1-\beta_1)$$
-
-2. explain how adam uses it
-
+In ADAM the learning rate is manipulated via the first moment estimate vector. The biased form is defined as 
+$$m_t=m_{t-1}\cdot \beta_1 + g_t\cdot (1-\beta_1)$$
+This is called the biased mean of the gradient at iteration $t$. The unbiased mean gradient, defined as $\hat{m_t}$ is then multiplied with the adaptive learning rate and subtracted from $\theta_{t-1}$ to form the adapted set of parameters $\theta$. This inherits ADAM with the properties from Gradient Descent with Momentum as described.\\
+It is important to notice that $m_t$ is initialized at $t=0$, being $m_0$, as a vector of zeros. This causes a bias, that will be discussed in section \textit{Bias Correction}.
 
 
 \subsection{Adaptive Learning Rate}
+
+
+
 1. explain adaptive learning rate
 2. explain how adam utilizes it
 To potentially escape local minima, ADAM utilizes an adaptive learning rate method, similar to the AdaGrad optimizer. Therefore the updated biased second raw moment estimate is being utilized. Which is defined as vector $v_t$.\\
@@ -200,6 +203,11 @@ The vector $v_t$ is inizalized as $v_0$ being a vector of zeros. This creates bi
 $$\hat{v_t}=\frac{v_t}{1-\beta_2^t}$$
 Details for bias correction can be found in the intial paper \textit{ADAM: A Method for Stochastic Optimization} from 2015.
 
+
+\subsection{Initial Bias Correction}
+1. explain bias
+2. why need to fix
+3. how it is fixes
 \subsection{The algorithm}
 \begin{algorithmic}
     \If{$i\geq 5$} 
