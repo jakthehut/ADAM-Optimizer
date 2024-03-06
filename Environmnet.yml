@@ -1,10 +1,14 @@
-  conda create Adamproj tf python=3.10
-  conda activate tf
-  conda install tensorflow
-  conda install keras
-  conda install pandas
-  conda install scikit-learn
-  conda install matplotlib
-  conda install pydot
-  conda install graphviz
-  conda install tensorflow
+  name: Adamproj
+  channels:
+    - defaults
+  dependencies:
+    - python=3.10.11
+    - tensorflow
+    - keras
+    - pandas
+    - scikit-learn
+    - matplotlib
+    - pydot
+    - graphviz
+
+  # % run !conda env create -f environment.yml
