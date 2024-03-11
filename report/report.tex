@@ -178,52 +178,58 @@ This section delves into the mathematics and underlying principles of ADAM's ope
 
 \subsection{Momentum Method}
 The Momentum Method is applied in ADAM to accelerate convergence. Compared to the conventional gradient descent the total change in parameters is found iteratively as a combination of the current gradient and past gradients.. \\\\
-\includegraphics[width=0.45\textwidth]{report/figures/GD_momentum.png}\\
+\includegraphics[width=0.5\textwidth]{report/figures/GD_momentum.png}\\
 The figure illustrates, on the left, how conventional gradient descent converges towards the minimum of the depicted quadratic function. On the right, one can observe gradient descent enhanced with momentum. Although the initial step is similar for both methods, the subsequent steps differ markedly. In the case of gradient descent alone, only the current gradient is considered as the slope. However, when employing gradient descent with momentum, the direction for the next step is determined by an accumulation of the current gradient and the previous gradients, resulting in a steeper descent as the first gradient slopes upwards.\\
 In ADAM the learning rate is manipulated via the first moment estimate vector. The biased form is defined as 
 $$m_t=m_{t-1}\cdot \beta_1 + g_t\cdot (1-\beta_1)$$
 This is called the biased mean of the gradient at iteration $t$. The unbiased mean gradient, defined as $\hat{m_t}$ is then multiplied with the adaptive learning rate and subtracted from $\theta_{t-1}$ to form the adapted set of parameters $\theta$. This inherits ADAM with the properties from Gradient Descent with Momentum as described.\\
-It is important to notice that $m_t$ is initialized at $t=0$, being $m_0$, as a vector of zeros. This causes a bias towards $0$, that will be discussed in section \textit{Bias Correction}.
+It is important to notice that $m_t$ is initialized at $t=0$, being $m_0$, as a vector of zeros. This causes a bias towards $0$, which will be discussed in section \textit{Bias Correction}.
 
 
 \subsection{Adaptive Learning Rate}
 The adaptive learning rate in ADAM adjusts the learning rate by considering the past gradients. This allows the model to take larger steps when far from the minimum and smaller steps when closer. This is possible, as the squared gradient is considered, meaning when the loss (error in a neural network) is large the learning rate is higher, and vice versa. Furthermore, by adjusting the learning rate this way, the initial learning rates is less relevant as it gets adjusted towards the data automatically. The methods idea was first copied from the Adadelta and RMSprop optimizer.
-\includegraphics[width=0.45\textwidth]{report/figures/GD_adapng}\\
+\includegraphics[width=0.5\textwidth]{report/figures/GD_rmsprop.png}\\
+The figure shows a contour plot of the McCormick function, which is regularly explored for optimization due to its landscape. \\
+McCormick function:
+$$ f(x, y) = \sin(x + y) + (x - y)^2 - 1.5x + 2.5y + 1 $$
+$$\nabla f(x, y) = [\cos(x + y) + 2(x - y) - 1.5, \cos(x + y) - 2(x - y) + 2.5 ]$$
+HERE SHOULD SHOW THAT ADAPTIE LEARNNING IS FASTER!! WHERE is MISTAKE?\\
 
-\includegraphics[width=0.45\textwidth]{report/figures/GD_adap.png}\\
-
-Overcoming the Saddle Point Problem: In high-dimensional spaces, saddle points (where the gradient is zero but which are not local minima) are more common than local minima. Adaptive learning rate algorithms can help overcome the problem of getting stuck at these points by adjusting the learning rate based on the historical gradients, potentially allowing the optimizer to "escape" saddle points more effectively.
-
-1. RMSprop
-
-1. explain adaptive learning rate\\
-2. explain how adam utilizes it\\\\
-To potentially escape local minima, ADAM utilizes an adaptive learning rate method, similar to the AdaGrad optimizer. Therefore the updated biased second raw moment estimate is being utilized. Which is defined as vector $v_t$.\\
-
-The so called $2^{nd}$ moment is calculated as:
+In Adam the learning rate is calculated via the uncentered variance of the gradient, the second moment vector $v_t$:
 $$v_t = v_{t-1} \cdot \beta_2 + g_t^2 \cdot (1-\beta_2)$$
+Where $\beta_2$ has a default value of 0.999. The vector $v_t$ is initialized as $v_0$ being a vector of zeros. 
+
+This creates biases, to remove the 
 
 This represents the moving average of the biased uncentered variance of the gradient.\\
 The principle to know here is that the larger the last gradients of a certain weight value is, the smaller that weight's learning rate is going to be. Meaning that the higher $v$ the smaller the step size, because the loss function is more sensetive at this point. On the other hand the lower $v$ the bigger the step size, because the loss function is less sensetive at this point.\\
-The vector $v_t$ is inizalized as $v_0$ being a vector of zeros. This creates biases, to remove the bias $v_t$ in every step is corrected as the following:
-$$\hat{v_t}=\frac{v_t}{1-\beta_2^t}$$
+
+
 Details for bias correction can be found in the intial paper \textit{ADAM: A Method for Stochastic Optimization} from 2015.
+\includegraphics[width=0.55\textwidth]{report/figures/GD_adap.png}\\
+
+Overcoming the Saddle Point Problem: In high-dimensional spaces, saddle points (where the gradient is zero but which are not local minima) are more common than local minima. Adaptive learning rate algorithms can help overcome the problem of getting stuck at these points by adjusting the learning rate based on the historical gradients, potentially allowing the optimizer to "escape" saddle points more effectively.\\
+The so called $2^{nd}$ moment is calculated as:
+
+
+
 
 
 \subsection{Initial Bias Correction}
 1. explain bias
 2. why need to fix
-3. how it is fixes
-\subsection{The algorithm}
-\begin{algorithmic}
-    \If{$i\geq 5$} 
-        \State $i \gets i-1$
-    \Else
-        \If{$i\leq 3$}
-            \State $i \gets i+2$
-        \EndIf
-    \EndIf 
-\end{algorithmic}
+3. how it is fixes\\
+First: Initialize hyperparameters: \(\alpha, \beta_1, \beta_2, \epsilon\), and initialize \(t=0, m_0 = 0, v_0 = 0\).\\
+Second: For each iteration \(t\):
+\begin{itemize}
+ \item[a.] Compute the gradient \(g_t\) with respect to the parameters \(\theta\) at time step \(t\).
+ \item[b.] Update biased first moment estimate: \(m_t = \beta_1 \cdot m_{t-1} + (1 - \beta_1) \cdot g_t\).
+ \item[c.] Update biased second raw moment estimate: \(v_t = \beta_2 \cdot v_{t-1} + (1 - \beta_2) \cdot g_t^2\).
+ \item[d.] Compute bias-corrected first moment estimate: \(\hat{m}_t = \frac{m_t}{1 - \beta_1^t}\).
+ \item[e.] Compute bias-corrected second raw moment estimate: \(\hat{v}_t = \frac{v_t}{1 - \beta_2^t}\).
+ \item[f.] Update the parameters: \(\theta_{t+1} = \theta_t - \alpha \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}\).
+\end{itemize}
+
 
 
 
