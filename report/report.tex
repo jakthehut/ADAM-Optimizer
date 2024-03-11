@@ -165,68 +165,82 @@ Therfore ADAM builds on GD and SDG algorithm:
 In practice, ADAM is frequently the preferred optimizer for training deep neural networks owing to its efficacy across a broad spectrum of tasks and its capacity to manage the intricacies of large-scale and high-dimensional optimization problems that are typically encountered in deep learning. The mathematical details and the algorithmic foundation of ADAM will be scrutinized in the subsequent chapter. Moreover, ensuing chapters will explore examples, thereby demonstrating the distinctions in performance among Gradient Descent, Stochastic Gradient Descent, and ADAM that were discussed in this section.
 
 
-\section{The ADAM Algorithm}
-This section delves into the mathematics and underlying principles of ADAM's operation. This exploration is facilitated by elaborating on ADAM's adoption of learning rate adaptation along with the momentum method, their combination distinguishes ADAM from other optimizers. Subsequently, the complete algorithm will be explained.\\
-\textbf{Relevant Definitions:}
+\section{Opimization Principles of ADAM}
+This section delves into the underlying principles of ADAM's operation. This exploration is facilitated by elaborating on ADAM's adoption of learning rate adaptation along with the momentum method along with some practical examples. While the formulas are for ADAM, the detailed implementation of the formulas for all examples can be found in our \href{https://github.com/jakthehut/ADAM-Optimizer}{Github Repository}\\
+At this point is essential to state some relevant definitions:
 \begin{itemize}
-    \item $t:=$ Iteration step in the algorithm
+    \item $t:=$ iteration step in the algorithm
     \item $\theta:=$ Initial Parameter vector, in terms of neural networks the weights in vector form
-    \item $f(\theta):=$ Stochastic objective function with parameters $\theta$
-    \item $g_t= \nabla_{\theta} f_t(\theta_{t-1})$ being the gradient at $t$  
+    \item $f(\theta):=$ stochastic objective function with parameters $\theta$
+    \item $g_t= \nabla_{\theta} f_t(\theta_{t-1})$ being the gradient at $t$, loss function at last learning iteration in neural networks
     \item $\beta_1, \beta_2 \in [0,1) :=$ exponential decay rates for the moment estimates
 \end{itemize}
 
-\subsection{Momentum Method}
+\subsection{First Moment Vector - The Momentum Method}
 The Momentum Method is applied in ADAM to accelerate convergence. Compared to the conventional gradient descent the total change in parameters is found iteratively as a combination of the current gradient and past gradients.. \\\\
-\includegraphics[width=0.45\textwidth]{report/figures/GD_momentum.png}\\
+\includegraphics[width=0.5\textwidth]{report/figures/GD_momentum.png}\\
 The figure illustrates, on the left, how conventional gradient descent converges towards the minimum of the depicted quadratic function. On the right, one can observe gradient descent enhanced with momentum. Although the initial step is similar for both methods, the subsequent steps differ markedly. In the case of gradient descent alone, only the current gradient is considered as the slope. However, when employing gradient descent with momentum, the direction for the next step is determined by an accumulation of the current gradient and the previous gradients, resulting in a steeper descent as the first gradient slopes upwards.\\
 In ADAM the learning rate is manipulated via the first moment estimate vector. The biased form is defined as 
 $$m_t=m_{t-1}\cdot \beta_1 + g_t\cdot (1-\beta_1)$$
-This is called the biased mean of the gradient at iteration $t$. The unbiased mean gradient, defined as $\hat{m_t}$ is then multiplied with the adaptive learning rate and subtracted from $\theta_{t-1}$ to form the adapted set of parameters $\theta$. This inherits ADAM with the properties from Gradient Descent with Momentum as described.\\
-It is important to notice that $m_t$ is initialized at $t=0$, being $m_0$, as a vector of zeros. This causes a bias towards $0$, that will be discussed in section \textit{Bias Correction}.
+This is called the biased mean of the gradient at iteration $t$, where $\beta_1$ has the default value of $0.9$. The unbiased mean gradient, defined as $\hat{m_t}$ is then multiplied with the adaptive learning rate and subtracted from $\theta_{t-1}$ to form the adapted set of parameters $\theta$. This inherits ADAM with the properties from Gradient Descent with Momentum as described.\\
+It is important to notice that $m_t$ is initialized at $t=0$, being $m_0$, as a vector of zeros. This causes a bias towards $0$, which will be discussed in section \textit{Bias Correction}.
 
 
-\subsection{Adaptive Learning Rate}
-The adaptive learning rate in ADAM adjusts the learning rate by considering the past gradients. This allows the model to take larger steps when far from the minimum and smaller steps when closer. This is possible, as the squared gradient is considered, meaning when the loss (error in a neural network) is large the learning rate is higher, and vice versa. Furthermore, by adjusting the learning rate this way, the initial learning rates is less relevant as it gets adjusted towards the data automatically. The methods idea was first copied from the Adadelta and RMSprop optimizer.
-\includegraphics[width=0.45\textwidth]{report/figures/GD_adapng}\\
-
-\includegraphics[width=0.45\textwidth]{report/figures/GD_adap.png}\\
-
-Overcoming the Saddle Point Problem: In high-dimensional spaces, saddle points (where the gradient is zero but which are not local minima) are more common than local minima. Adaptive learning rate algorithms can help overcome the problem of getting stuck at these points by adjusting the learning rate based on the historical gradients, potentially allowing the optimizer to "escape" saddle points more effectively.
-
-1. RMSprop
-
-1. explain adaptive learning rate\\
-2. explain how adam utilizes it\\\\
-To potentially escape local minima, ADAM utilizes an adaptive learning rate method, similar to the AdaGrad optimizer. Therefore the updated biased second raw moment estimate is being utilized. Which is defined as vector $v_t$.\\
-
-The so called $2^{nd}$ moment is calculated as:
+\subsection{Second Moment Vector - Adaptive Learning Rate}
+The adaptive learning rate in ADAM adjusts the learning rate by considering the past gradients. This allows the model to take larger steps when far from the minimum and smaller steps when closer. This is possible, as the squared gradient is considered, meaning when the loss (error in a neural network) is large the learning rate is higher, and vice versa. Furthermore, by adjusting the learning rate this way, the initial learning rate is less relevant as it gets adjusted toward the data automatically. The methods idea was first copied from the Adadelta and RMSprop optimizer.
+\includegraphics[width=0.5\textwidth]{report/figures/GD_rmsprop.png}\\
+The figure shows a contour plot of the McCormick function, regularly explored for optimization due to its landscape. The graph illustrates the difference between classic GD compared to GD with the adaptive learning rate as implemented by ADAM. This is achieved by dividing GD Learning rate by the root of the second moment vector. While classic GD is overshooting during the first couple of steps, GD with adaptive learning takes smaller steps when getting closer to the minimum, as the initial point is already close which adaptive learning knows due to its dependency of the gradient.\\
+In ADAM the learning rate is manipulated via the second moment vector. The biased form is defined as:
 $$v_t = v_{t-1} \cdot \beta_2 + g_t^2 \cdot (1-\beta_2)$$
-
-This represents the moving average of the biased uncentered variance of the gradient.\\
-The principle to know here is that the larger the last gradients of a certain weight value is, the smaller that weight's learning rate is going to be. Meaning that the higher $v$ the smaller the step size, because the loss function is more sensetive at this point. On the other hand the lower $v$ the bigger the step size, because the loss function is less sensetive at this point.\\
-The vector $v_t$ is inizalized as $v_0$ being a vector of zeros. This creates biases, to remove the bias $v_t$ in every step is corrected as the following:
-$$\hat{v_t}=\frac{v_t}{1-\beta_2^t}$$
-Details for bias correction can be found in the intial paper \textit{ADAM: A Method for Stochastic Optimization} from 2015.
-
+This is called the biased uncentered variance of the gradient at iteration $t$. Where $\beta_2$ has a default value of 0.999. The vector $v_t$ is initialized as $v_0$ being a vector of zero causing a bias, similar to $m_t$ that will also be explained in section \textit{Bias Correction}. The squared unbiased second-moment vector $\sqrt{\hat{v_t}}$ divides the default learning rate in ADAM to make it adaptive.\\
 
 \subsection{Initial Bias Correction}
-1. explain bias
-2. why need to fix
-3. how it is fixes
-\subsection{The algorithm}
-\begin{algorithmic}
-    \If{$i\geq 5$} 
-        \State $i \gets i-1$
-    \Else
-        \If{$i\leq 3$}
-            \State $i \gets i+2$
-        \EndIf
-    \EndIf 
-\end{algorithmic}
+Bias correction is an essential step to ensure the accuracy and efficiency of the moment vectors, especially during the initial iterations. As both vectors are initialized as vectors of zero a significant bias towards zero is evident in the initial steps. This can lead to smaller-than-ideal step sizes at the start of optimization. If not corrected, this can slow down the convergence of the algorithm, as the optimizer takes conservatively small steps when the step sizes are unduly influenced by the initial bias.\\
+Bias correction is performed for both the first and second-moment vector :
+\begin{enumerate}
+    \item First Moment Bias Correction:\\
+    \(m_t\) is corrected by dividing it by \((1 - \beta_1^t)\), where \(\beta_1\) is the exponential decay rate for the first moment estimates, and \(t\) is the iteration step. As \(t\) increases, \((1 - \beta_1^t)\) approaches 1, and the bias correction becomes less significant.
+    \item Second Moment Bias Correction:\\
+    Similarly, the second-moment vector \(v_t\) is corrected by dividing it by \((1 - \beta_2^t)\), where \(\beta_2\) is the exponential decay rate for the second-moment estimates. This adjustment compensates for the underestimation of the second moment, ensuring that the scaled gradient is divided by a more accurate estimate of its variance, leading to more appropriate step sizes.
+\end{enumerate}
 
 
-
+\section{The Algorithm}
+Definitions as in the forgoing section.
+\subsection{Initialize Hyperparameters}
+First, the hyperparameters need to be initialized:
+\begin{itemize}
+    \item $\alpha$ stepsize or the initial learning rate, usually around $0.001$ is picked. As mentioned the learning rate is manipulated by the second moment vector, resulting that the initial hyperparameter $\alpha$ having less impact on the Opimitizer. In general a higher learning rate can lead to faster convergence but risks overshooting the minimum, potentially causing instability. A lower learning rate ensures more stable convergence but may slow down the optimization process, possibly leading to getting stuck in local minima. 
+    \item $\beta_1$ is the exponential decay rate for the first moment vector, usually around $0.9$. A higher \(\beta_1\) value (close to 1) gives more weight to past gradients, potentially smoothing out the optimization but risking a slower reaction to recent changes. A lower \(\beta_1\) decreases memory, making it more responsive to new gradients but possibly more volatile.
+    \item $\beta_2$ is the exponential decay rate for the second moment vector, usually around $0.999$. A higher \(\beta_2\) value increases the influence of past squared gradients, leading to more stable but smaller learning rates and therefore slower updates, as it might not react quickly to changes in gradient variance. A lower \(\beta_2\) makes the algorithm more sensitive to recent changes in gradient variance, which can accelerate learning but increase the risk of instability.
+    \item $\epsilon$ is for computational purposes to avoid division by zero. Can be picked according to computational capabilities between $10^{-5}$ and $10^{-8}$.
+\end{itemize}
+\subsection{Initialize Model Dependent Parameters}
+\begin{itemize}
+    \item $f(\theta)$ being the Stochastic loss function with parameters $\theta$. In the context of training neural networks, the stochastic objective function refers to the loss or cost function evaluated on a randomly selected subset (mini-batch) of the training data.
+    \item $t=1$ initial step in the algorithm
+    \item $\theta_0$ initial parameters
+    \item $m_0=0$ first moment vector initializes as a vector of zeros
+    \item $v_0=0$ second moment vector initializes as a vector of zeros
+\end{itemize}
+\subsection{Algorithm steps}
+As long as the parameters $\theta_t$ are not converging the following loop runs:
+\begin{enumerate}
+    \item Compute the gradient \(g_t\) with respect to the parameters \(\theta\) at time step \(t\).\\
+    $$g_t= \nabla_{\theta} f_t(\theta_{t-1})$$
+    \item Update biased first-moment estimate
+    $$m_t = \beta_1 \cdot m_{t-1} + (1 - \beta_1) \cdot g_t$$
+    \item Update biased second-moment estimate
+    $$v_t = \beta_2 \cdot v_{t-1} + (1 - \beta_2) \cdot g_t^2$$
+    \item Compute bias-corrected first-moment estimate
+    $$\hat{m}_t = \frac{m_t}{1 - \beta_1^t}$$
+    \item Compute bias-corrected second-moment estimate: 
+    $$\hat{v}_t = \frac{v_t}{1 - \beta_2^t}$$
+    \item Update the parameters
+    $$\theta_{t+1} = \theta_t - \alpha \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}$$
+    \item Increase $t$ by one
+    \item Check if $\theta_t$ converged
+\end{enumerate}
 
 
 
@@ -255,28 +269,8 @@ Ending
 \newpage
 \pagestyle{fancy}
 
+
 \section{Appendix A}
-\section*{Intuitive Explanation of ADAM}
-Imagine you're playing a video game where you need to find a treasure hidden deep within a maze. The maze is foggy, so you can't see the whole layout from where you are. Your goal is to find the treasure in the least amount of time, with some areas being slippery or uphill, making your journey tougher or easier based on where you step. Here's how ADAM helps you navigate this challenge, akin to how it helps a machine learn
-
-\subsubsection*{The Basics of Moving Around}
-In this game, you have a magic map (the algorithm) that helps you decide every move (how to adjust the model's parameters) to get to the treasure (minimize the error in predictions).
-
-\subsubsection*{Remembering Your Steps}
-As you start moving, you realize that some paths you took were really good, making it easier to move forward, while others were not so great. ADAM, like a smart assistant, remembers these steps. It keeps track of your recent moves, emphasizing the better ones (this is similar to the "momentum" part of ADAM, which helps to keep moving in a good direction based on past gradients).
-
-\subsubsection*{Adjusting Your Pace}
-Some parts of the maze are slippery (easy to move fast) or uphill (hard to move). ADAM notices this and adjusts your pace accordingly. If it's slippery, it makes you take smaller steps to avoid overshooting the target, and if it's uphill, it encourages bigger steps to speed up the journey. This is like ADAM adjusting the learning rate for each parameter based on the past gradients' squared values, making sure you progress at the right speed without missing the treasure.
-
-\subsubsection*{Getting Smarter Over Time}
-The magic map gets better the longer you use it. It learns from every step you've taken, making smarter suggestions about which direction to go next. This is akin to how ADAM corrects its estimates to become more accurate over time, ensuring that the adjustments it suggests for your steps (the learning rates) are getting more and more effective.  
-   
-\subsubsection*{Finding the Treasure}
-By remembering the good paths, adjusting your pace based on the terrain, and getting smarter over time, ADAM helps you navigate the maze efficiently and find the treasure faster than if you were just wandering around or using a less sophisticated map. This is similar to how ADAM optimizes a machine learning model's parameters to make accurate predictions or decisions, effectively "finding the treasure" in the form of the best solution to a problem. 
-  
-In summary, ADAM is like a highly intelligent guide for navigating through complex challenges, helping you reach your goal efficiently by learning from past experiences and adjusting your approach as you go.
-
-\section{Appendix B}
 \centering Source Code
 All Notebooks and Visualizations including detailed code can be found in our GITHUB Repository with the link: \href{https://github.com/jakthehut/ADAM-Optimizer}{https://github.com/jakthehut/ADAM-Optimizer}
 
