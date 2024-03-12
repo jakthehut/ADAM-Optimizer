@@ -193,7 +193,8 @@ The figure shows a contour plot of the McCormick function, regularly explored fo
 In ADAM the learning rate is manipulated via the second moment vector. The biased form is defined as:
 $$v_t = v_{t-1} \cdot \beta_2 + g_t^2 \cdot (1-\beta_2)$$
 This is called the biased uncentered variance of the gradient at iteration $t$. Where $\beta_2$ has a default value of 0.999. The vector $v_t$ is initialized as $v_0$ being a vector of zero causing a bias, similar to $m_t$ that will also be explained in section \textit{Bias Correction}. The squared unbiased second-moment vector $\sqrt{\hat{v_t}}$ divides the default learning rate in ADAM to make it adaptive.\\
-
+%WORKS BETTER FOR HIGH DEMSIONs, to navigate don't get stuck in the local maxima
+% write briefly about that
 \subsection{Initial Bias Correction}
 Bias correction is an essential step to ensure the accuracy and efficiency of the moment vectors, especially during the initial iterations. As both vectors are initialized as vectors of zero a significant bias towards zero is evident in the initial steps. This can lead to smaller-than-ideal step sizes at the start of optimization. If not corrected, this can slow down the convergence of the algorithm, as the optimizer takes conservatively small steps when the step sizes are unduly influenced by the initial bias.\\
 Bias correction is performed for both the first and second-moment vector :
@@ -204,7 +205,10 @@ Bias correction is performed for both the first and second-moment vector :
     Similarly, the second-moment vector \(v_t\) is corrected by dividing it by \((1 - \beta_2^t)\), where \(\beta_2\) is the exponential decay rate for the second-moment estimates. This adjustment compensates for the underestimation of the second moment, ensuring that the scaled gradient is divided by a more accurate estimate of its variance, leading to more appropriate step sizes.
 \end{enumerate}
 
-
+% GRAOH FOR INTIAL BIAS CORRECTION
+\subsection{Principes performance compared to GD}
+% find a nice graph to show how adam
+% services local minima compared to gradient descent
 \section{The Algorithm}
 Definitions as in the forgoing section.
 \subsection{Initialize Hyperparameters}
@@ -249,8 +253,6 @@ As long as the parameters $\theta_t$ are not converging the following loop runs:
 \section{Computational Implementation}
 Do a classification.  
 Get an example with neural network. Use a general architecture. Maybe image classification (3Blue one Brown, video example).
-\subsection{Hyperparameters}
-Explain the hyperparameters that can be chosen, when each is effectfull
 \subsection{Example Impleementation}
 Insert Code
 
