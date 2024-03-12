@@ -204,6 +204,7 @@ Bias correction is performed for both the first and second-moment vector :
     \item Second Moment Bias Correction:\\
     Similarly, the second-moment vector \(v_t\) is corrected by dividing it by \((1 - \beta_2^t)\), where \(\beta_2\) is the exponential decay rate for the second-moment estimates. This adjustment compensates for the underestimation of the second moment, ensuring that the scaled gradient is divided by a more accurate estimate of its variance, leading to more appropriate step sizes.
 \end{enumerate}
+\includegraphics[width=0.5\textwidth]{report/figures/GD_rmsprop.png}\\
 
 % GRAOH FOR INTIAL BIAS CORRECTION
 \subsection{Principes performance compared to GD}
