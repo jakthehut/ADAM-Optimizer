@@ -1,5 +1,5 @@
-\documentclass[journal]{IEEEtran}
-
+%\documentclass[journal]{IEEEtran}
+\documentclass[oneside]{article}
 
 \usepackage{graphicx}\usepackage{url}  % code reduction referencing pictures 
 \usepackage{amsmath}  % Complies math
@@ -22,11 +22,9 @@
         \vfill\noindent\hrulefill \\
         \vspace*{1cm}
         \textbf{\huge ADAM}\\
-        \vspace{0.2cm}
-        \textbf{\huge Adaptive Movement Estimation Algorithm }
         \vspace{0.5cm}
-        \\
-        Optimization of Machine Learning
+        
+         Adaptive Movement Estimation Algorithm
         
         \noindent\hrulefill \\
 
@@ -54,38 +52,29 @@
 
 % FOOTER AND HEADER SETTINGS
 \pagestyle{fancy}
-\headheight = 25pt
-\fancyhf{}
-\fancyfoot[C]{\thepage}
-\fancyhead[C]{Adaptive Movement Estimation Algorithm \\ \nouppercase{\leftmark\hfill\rightmark}}
+%\headheight = 25pt
+%\fancyhf{}
+%\fancyfoot[C]{\thepage}
+%\fancyhead[C]{Adaptive Movement Estimation Algorithm \\ \nouppercase{\leftmark\hfill\rightmark}}
 \newpage
 
 % TABLE of Content
 \tableofcontents 
 \vspace{1.5cm}
 
-% ABSTRACT
-\begin{abstract}
-    This will be the best Abstract Ever 
-\end{abstract}
 
+\newpage
 % START PAPER here
 \section{Introduction}
 
-\begin{itemize}
-    \item what is adam
-      for adam introduction paper click \href{https://arxiv.org/abs/1412.6980}{link}
-    \item What is ADAM used for
-    \item Preview for this paper
-\end{itemize}
 
 
 % Highlight differences to other Gradient DEscents
 \section{Optimization Algorithms}
 ADAM builds upon Stochastic Gradient Descent (SDG). Therefore, this section explains the algorithm of Gradient Descent (GD) and then SGD before introducing ADAM.
 \subsection{Gradient Descent}
-Gradient Descent is an optimization algorithm utilized for minimizing the loss function. In the context of a Neural Network application, Gradient Descent updates the model's parameters (for example, weights) by moving them in the direction opposite to the gradient of the loss function with respect to those parameters, with the objective of minimizing the loss.  \\
-A commonly employed metaphor is that of a hiker in the mountains, which represent the landscape of the loss function. The hiker's goal is to reach the lowest valley within the mountain range, where the loss is minimal; at the mountain peaks, the loss is maximal, and in the valleys, it is lowest. The challenge for the hiker arises in bad weather conditions, where visibility of both the peak and the valley is obstructed. In this scenario, Gradient Descent aids the hiker by calculating the direction from their current position where the mountain has the steepest downward gradient. By repeatedly following the direction of the gradient, the hiker will eventually reach a valley, which corresponds to a local minimum of the loss function. \\
+Gradient Descent is an optimization algorithm utilized for minimizing the loss function. In the context of a Neural Network application, Gradient Descent updates the model's parameters (for example, weights) by moving them in the direction opposite to the gradient of the loss function concerning those parameters, to minimize the loss.  \\
+A commonly employed metaphor is that of a hiker in the mountains, which represents the landscape of the loss function. The hiker's goal is to reach the lowest valley within the mountain range, where the loss is minimal; at the mountain peaks, the loss is maximal, and in the valleys, it is lowest. The challenge for the hiker arises in bad weather conditions, where visibility of both the peak and the valley is obstructed. In this scenario, Gradient Descent aids the hiker by calculating the direction from their current position where the mountain has the steepest downward gradient. By repeatedly following the direction of the gradient, the hiker will eventually reach a valley, which corresponds to a local minimum of the loss function. \\
 
 \subsubsection{Application in Neural Networks}
 Introducing the notion of parameters:
@@ -126,7 +115,7 @@ SGD modifies this process by updating the model's parameters using only a single
     \item Select One Data Point (Stochastic) or a Small Batch (Mini-batch SGD): \\
     Instead of using the entire dataset to compute the gradient of the loss function, select a single data point (for pure SGD) or a small subset of the data (for mini-batch SGD).
     \item Compute the Gradient: \\
-    Calculate the gradient of the loss function with respect to the parameters, but only for the selected data point or batch. This gradient is an estimate of the gradient over the entire dataset.
+    Calculate the gradient of the loss function concerning the parameters, but only for the selected data point or batch. This gradient is an estimate of the gradient over the entire dataset.
     \item Update the Parameters: \\
     Use this estimated gradient to update the model's parameters, similar to the basic GD formula:
     \[ \theta = \theta - \alpha \nabla_\theta J(\theta; x^{(i)}, y^{(i)}) \]
@@ -150,7 +139,7 @@ SGD and its variants are widely used for training neural networks due to their e
 
 \subsection{ADAM}
 ADAM is another optimization algorithm that is widely used in training machine learning models. It combines ideas from two other extensions of stochastic gradient descent (SGD): RMSprop (Root Mean Square Propagation) and Momentum. ADAM adjusts the learning rate for each parameter dynamically, based on estimates of the gradients' first (mean) and second (uncentered variance) moments. This approach helps to converge faster and more efficiently than SGD, especially in the context of large datasets and complex neural network architectures.\\
-Therfore ADAM builds on GD and SDG algorithm:
+Therefore ADAM builds on GD and SDG algorithms:
 \begin{itemize}
     \item GD updates the parameters of the model using the gradient of the loss function calculated over the entire dataset. This can be slow and computationally expensive for large datasets.
     \item SGD, including its mini-batch variant, updates parameters using the gradient calculated from a single sample or a small batch of samples. This introduces noise, which can help escape local minima but may also lead to convergence issues.
@@ -165,8 +154,9 @@ Therfore ADAM builds on GD and SDG algorithm:
 In practice, ADAM is frequently the preferred optimizer for training deep neural networks owing to its efficacy across a broad spectrum of tasks and its capacity to manage the intricacies of large-scale and high-dimensional optimization problems that are typically encountered in deep learning. The mathematical details and the algorithmic foundation of ADAM will be scrutinized in the subsequent chapter. Moreover, ensuing chapters will explore examples, thereby demonstrating the distinctions in performance among Gradient Descent, Stochastic Gradient Descent, and ADAM that were discussed in this section.
 
 
-\section{Opimization Principles of ADAM}
-This section delves into the underlying principles of ADAM's operation. This exploration is facilitated by elaborating on ADAM's adoption of learning rate adaptation along with the momentum method along with some practical examples. While the formulas are for ADAM, the detailed implementation of the formulas for all examples can be found in our \href{https://github.com/jakthehut/ADAM-Optimizer}{Github Repository}\\
+\section{Optimization Principles of ADAM}
+This section delves into the underlying principles of ADAM's operation. This exploration is facilitated by elaborating on ADAM's adoption of learning rate adaptation along with the momentum method along with some practical examples. While the formulas are for ADAM, the detailed implementation of the formulas for all examples can be found in our \href{https://github.com/jakthehut/ADAM-Optimizer}{Github Repository}.\\
+
 At this point is essential to state some relevant definitions:
 \begin{itemize}
     \item $t:=$ iteration step in the algorithm
@@ -176,9 +166,11 @@ At this point is essential to state some relevant definitions:
     \item $\beta_1, \beta_2 \in [0,1) :=$ exponential decay rates for the moment estimates
 \end{itemize}
 
-\subsection{First Moment Vector - The Momentum Method}
-The Momentum Method is applied in ADAM to accelerate convergence. Compared to the conventional gradient descent the total change in parameters is found iteratively as a combination of the current gradient and past gradients.. \\\\
-\includegraphics[width=0.5\textwidth]{report/figures/GD_momentum.png}\\
+\subsection{First Moment Vector}
+The first moment vector follows the principle of the Momentum Method, which is applied in ADAM to accelerate convergence. Compared to the conventional gradient descent the total change in parameters is found iteratively as a combination of the current gradient and past gradients.. \\
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{report/figures/GD_momentum.png}\\
+\end{center}
 The figure illustrates, on the left, how conventional gradient descent converges towards the minimum of the depicted quadratic function. On the right, one can observe gradient descent enhanced with momentum. Although the initial step is similar for both methods, the subsequent steps differ markedly. In the case of gradient descent alone, only the current gradient is considered as the slope. However, when employing gradient descent with momentum, the direction for the next step is determined by an accumulation of the current gradient and the previous gradients, resulting in a steeper descent as the first gradient slopes upwards.\\
 In ADAM the learning rate is manipulated via the first moment estimate vector. The biased form is defined as 
 $$m_t=m_{t-1}\cdot \beta_1 + g_t\cdot (1-\beta_1)$$
@@ -186,15 +178,17 @@ This is called the biased mean of the gradient at iteration $t$, where $\beta_1$
 It is important to notice that $m_t$ is initialized at $t=0$, being $m_0$, as a vector of zeros. This causes a bias towards $0$, which will be discussed in section \textit{Bias Correction}.
 
 
-\subsection{Second Moment Vector - Adaptive Learning Rate}
-The adaptive learning rate in ADAM adjusts the learning rate by considering the past gradients. This allows the model to take larger steps when far from the minimum and smaller steps when closer. This is possible, as the squared gradient is considered, meaning when the loss (error in a neural network) is large the learning rate is higher, and vice versa. Furthermore, by adjusting the learning rate this way, the initial learning rate is less relevant as it gets adjusted toward the data automatically. The methods idea was first copied from the Adadelta and RMSprop optimizer.
-\includegraphics[width=0.5\textwidth]{report/figures/GD_rmsprop.png}\\
-The figure shows a contour plot of the McCormick function, regularly explored for optimization due to its landscape. The graph illustrates the difference between classic GD compared to GD with the adaptive learning rate as implemented by ADAM. This is achieved by dividing GD Learning rate by the root of the second moment vector. While classic GD is overshooting during the first couple of steps, GD with adaptive learning takes smaller steps when getting closer to the minimum, as the initial point is already close which adaptive learning knows due to its dependency of the gradient.\\
+\subsection{Second Moment Vector}
+The second moment vector is to implement an adaptive learning rate in ADAM, by adjusting the learning rate by considering the past gradients. This allows the model to take larger steps when far from the minimum and smaller steps when closer. This is possible, as the squared gradient is considered, meaning when the loss (error in a neural network) is large the learning rate is higher, and vice versa. Furthermore, by adjusting the learning rate this way, the initial learning rate is less relevant as it gets adjusted toward the data automatically. The methods idea was first copied from the Adadelta and RMSprop optimizer.\\
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{report/figures/GD_rmsprop.png}\\
+\end{center}
+The figure shows a contour plot of the McCormick function, regularly explored for optimization due to its landscape. The graph illustrates the difference between classic GD compared to GD with the adaptive learning rate as implemented by ADAM. This is achieved by dividing the GD Learning rate by the root of the second moment vector. While classic GD is overshooting during the first couple of steps, GD with adaptive learning takes smaller steps when getting closer to the minimum, as the initial point is already close which adaptive learning knows due to its dependency on the gradient.\\
 In ADAM the learning rate is manipulated via the second moment vector. The biased form is defined as:
 $$v_t = v_{t-1} \cdot \beta_2 + g_t^2 \cdot (1-\beta_2)$$
 This is called the biased uncentered variance of the gradient at iteration $t$. Where $\beta_2$ has a default value of 0.999. The vector $v_t$ is initialized as $v_0$ being a vector of zero causing a bias, similar to $m_t$ that will also be explained in section \textit{Bias Correction}. The squared unbiased second-moment vector $\sqrt{\hat{v_t}}$ divides the default learning rate in ADAM to make it adaptive.\\
 %WORKS BETTER FOR HIGH DEMSIONs, to navigate don't get stuck in the local maxima
-% write briefly about that
+% Write briefly about that
 \subsection{Initial Bias Correction}
 Bias correction is an essential step to ensure the accuracy and efficiency of the moment vectors, especially during the initial iterations. As both vectors are initialized as vectors of zero a significant bias towards zero is evident in the initial steps. This can lead to smaller-than-ideal step sizes at the start of optimization. If not corrected, this can slow down the convergence of the algorithm, as the optimizer takes conservatively small steps when the step sizes are unduly influenced by the initial bias.\\
 Bias correction is performed for both the first and second-moment vector :
@@ -204,18 +198,34 @@ Bias correction is performed for both the first and second-moment vector :
     \item Second Moment Bias Correction:\\
     Similarly, the second-moment vector \(v_t\) is corrected by dividing it by \((1 - \beta_2^t)\), where \(\beta_2\) is the exponential decay rate for the second-moment estimates. This adjustment compensates for the underestimation of the second moment, ensuring that the scaled gradient is divided by a more accurate estimate of its variance, leading to more appropriate step sizes.
 \end{enumerate}
-\includegraphics[width=0.5\textwidth]{report/figures/GD_rmsprop.png}\\
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{report/figures/ADAM_bias.png}\\
+\end{center}
+The figure illustrates the impact of bias correction. Biased ADAM has a stronger tendency towards zero, which in this case leads to more significant overshooting, ultimately ending in slower convergence than unbiased ADAM.
 
-% GRAOH FOR INTIAL BIAS CORRECTION
-\subsection{Principes performance compared to GD}
-% find a nice graph to show how adam
-% services local minima compared to gradient descent
+\subsection{Summary}
+As mentioned ADAM is an improvement from other Optimizations in its
+\begin{itemize}
+    \item first moment vector, which stabalizes the gradient momentum by considering past gradients
+    \item second moment vector, which stabalizes the learning rate
+\end{itemize}
+Furthermore, via bias correction a further stablization mechanism is implemented.\\
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{report/figures/adam_vs_gradientdescent.png}\\
+\end{center}
+The figure well illustrates well how
+\begin{itemize}
+    \item the first moment vector prevents the gradient from changing rapidly
+    \item the second moment vector alters the learning rate to be small, as the minimum is close.
+\end{itemize}
+Ultimately leading to smoother convergence than with vanilla GD.
+
 \section{The Algorithm}
 Definitions as in the forgoing section.
 \subsection{Initialize Hyperparameters}
 First, the hyperparameters need to be initialized:
 \begin{itemize}
-    \item $\alpha$ stepsize or the initial learning rate, usually around $0.001$ is picked. As mentioned the learning rate is manipulated by the second moment vector, resulting that the initial hyperparameter $\alpha$ having less impact on the Opimitizer. In general a higher learning rate can lead to faster convergence but risks overshooting the minimum, potentially causing instability. A lower learning rate ensures more stable convergence but may slow down the optimization process, possibly leading to getting stuck in local minima. 
+    \item $\alpha$ stepsize or the initial learning rate, usually around $0.001$ is picked. As mentioned the learning rate is manipulated by the second moment vector, resultininat the initial hyperparameter $\alpha$ having less impact on the Opimitizer. In genera,l a higher learning rate can lead to faster convergence but risks overshooting the minimum, potentially causing instability. A lower learning rate ensures more stable convergence but may slow down the optimization process, possibly leading to getting stuck in local minima. 
     \item $\beta_1$ is the exponential decay rate for the first moment vector, usually around $0.9$. A higher \(\beta_1\) value (close to 1) gives more weight to past gradients, potentially smoothing out the optimization but risking a slower reaction to recent changes. A lower \(\beta_1\) decreases memory, making it more responsive to new gradients but possibly more volatile.
     \item $\beta_2$ is the exponential decay rate for the second moment vector, usually around $0.999$. A higher \(\beta_2\) value increases the influence of past squared gradients, leading to more stable but smaller learning rates and therefore slower updates, as it might not react quickly to changes in gradient variance. A lower \(\beta_2\) makes the algorithm more sensitive to recent changes in gradient variance, which can accelerate learning but increase the risk of instability.
     \item $\epsilon$ is for computational purposes to avoid division by zero. Can be picked according to computational capabilities between $10^{-5}$ and $10^{-8}$.
@@ -252,13 +262,29 @@ As long as the parameters $\theta_t$ are not converging the following loop runs:
 
 %PRATICAL EXAMPLE
 \section{Computational Implementation}
-Do a classification.  
-Get an example with neural network. Use a general architecture. Maybe image classification (3Blue one Brown, video example).
-\subsection{Example Impleementation}
-Insert Code
+One of the main benefits of the ADAM algorithm is its ability to optimize loss functions in more complex environments, such as neural networks. To investigate ADAMs efficiency compared to other algorithm, a classification task has been executed using different optimisers. These were ADAM, SGD, ADAgrad and RMSprop. The classifcation task at hand is the \textit{MNIST-Fashion} problem. 
+
+\subsection{MNIST-fashion}
+
+The MNIST fashion dataset is a data set made by Zalando containing $70 000 \ ,28 \times 28$ images depicting 10 different classes of fashion items. These $70 000$ images are then divided into a training set of $60000$ and a test set of $10000$
+Each pixel stores the information of how dark it is ranging 0-255. Overall it is similar to the orginal MNIST dataset, which contains instead contain numbers and which pictures are structured in the same manner, but it is considered a harder classifcation task than the regular MNIST problem, which one  github blog shows can be accurately predicted with just one \hyperlink{https://gist.github.com/dgrtwo/aaef94ecc6a60cd50322c0054cc04478}{pixel}. 
+
+\subsection{Model build}
+To normalize the values, each pixels grey scale attribute was divided by 255, to make it range from 0-1 instead of 0-255, this is to make training easier due to smaller range. \\
+
+Each model has 128 neurons and uses ReLu as an activation function in the first layer. Since we are looking to classify the the images into 10 different categories, there is 10 neurons in the second layer, using the softmax function to get the probabilities of each item of clothing. \\
+
+The models are trained using the SpareCategoricalEntropy loss function, which multiplies the predicted probability and the actual probability to calculate the loss. 
+
 
 % COMPARISON of performance
 \section{Performance Comparison}
+\subsection{Loss function minimisation}
+
+\subsection{Accuracy}
+Not that in this graph, each model has been trained with 10,25,50 or 100 epochs and the accuracy has then been measured on the test set. 
+
+\subsection{Time} 
 
  
 \section{Conclusion}
@@ -275,7 +301,7 @@ Ending
 
 \section{Appendix A}
 \centering Source Code
-All Notebooks and Visualizations including detailed code can be found in our GITHUB Repository with the link: \href{https://github.com/jakthehut/ADAM-Optimizer}{https://github.com/jakthehut/ADAM-Optimizer}
+All Notebooks and Visualizations including detailed code can be found in ouGitHubUB Repository with the link: \href{https://github.com/jakthehut/ADAM-Optimizer}{https://github.com/jakthehut/ADAM-Optimizer}
 
 
 \end{document}

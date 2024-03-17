@@ -1,0 +1,130 @@
+\documentclass{beamer}
+\usepackage{hyperref} %ctex,
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+
+% other packages
+\usepackage{latexsym,amsmath,xcolor,multicol,booktabs,calligra}
+\usepackage{graphicx,pstricks,listings,stackengine}
+
+\author{Olle Rehnfeldt, Jakob Hutter}
+\title{ADAM}
+\subtitle{Adaptive Movement Estimation Algorithm}
+\institute{Data Science and Society}
+\date{\today}
+
+% defs
+\def\cmd#1{\texttt{\color{red}\footnotesize $\backslash$#1}}
+\def\env#1{\texttt{\color{blue}\footnotesize #1}}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{halfgray}{gray}{0.55}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\bfseries\color{deepblue},
+    emphstyle=\ttfamily\color{deepred},    % Custom highlighting style
+    stringstyle=\color{deepgreen},
+    numbers=left,
+    numberstyle=\small\color{halfgray},
+    rulesepcolor=\color{red!20!green!20!blue!20},
+    frame=shadowbox,
+}
+
+\newcommand\myheading[1]{%
+  \par\bigskip
+  {\Large\bfseries#1}\par\smallskip}
+
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+
+\begin{frame}
+    \myheading{Gradient Descent}
+    What is gradient Descent
+\end{frame}
+
+
+\begin{frame}
+    \myheading{Stochastic Gradient Descent}
+    What is SGD
+\end{frame}
+
+\begin{frame}
+    \myheading{How to improve Gradient Descent?}
+\end{frame}
+
+
+\begin{frame}
+    \myheading{Momentum Method\\First Moment Vector}
+    Step direction is dependent on current and past gradients.
+    $$Next Step = constant \cdot last step + (1-constant) \cdot Gradient$$
+    
+    \begin{figure}[h]
+        \includegraphics[width=8cm]{report/figures/GD_momentum.png}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \myheading{Adaptive Learning Rate\\Second Moment Vector}
+    Step Length is dependent on magnitude of the gradient
+    $$NextStepSize = \frac{LearningRate}{Gradient^2} $$
+    
+    \begin{figure}[h]
+        \includegraphics[width=8cm]{report/figures/GD_rmsprop.png}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \myheading{Bias correction}
+    Both methods are initialized as zeros.
+    
+    \begin{figure}[h]
+        \includegraphics[width=8cm]{report/figures/ADAM_bias.png}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}
+    \myheading{ADAM}
+    Stochastic Gradient Descent with
+    \begin{enumerate}
+        \item Momentum Method
+        \item Adaptive Learning Rate
+        \item Bias correction
+    \end{enumerate}
+    
+    \begin{figure}[h]
+        \includegraphics[width=8cm]{report/figures/adam_vs_gradientdescent.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \myheading{The Algorithm}
+    \begin{enumerate}
+        \item Initialize Parameters
+        Neural Network Weights, Constants, etc.
+        \item Initialize First and Second Moment Vector as vectors of 0
+        \item Calculate the Gradient of the loss function with the current batch
+        \item Calculate the First Moment vector, remove bias
+        \item Calculate the Second Moment vector, remove bias
+        \item Calculate the adapted new set of parameters
+        \item If the parameters converge stop, otherwise go back to step 3. With next batch
+    \end{enumerate}
+\end{frame}
+
+
+
+
+\begin{frame}
+    \myheading{Advantages of ADAM}
+\end{frame}
+\end{document}
