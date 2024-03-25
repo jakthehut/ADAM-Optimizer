@@ -178,7 +178,7 @@ While the formulas are for ADAM, the detailed implementation of the formulas for
 \subsection{First Moment Vector}
 The first-moment vector follows the principle of the Momentum Method, which is applied in ADAM to accelerate convergence. Compared to the conventional gradient descent the total change in parameters is found iteratively as a combination of the current gradient and past gradients.\par
 \begin{center}
-    \includegraphics[width=1\textwidth]{report/figures/GD_momentum.png}
+    \includegraphics[width=1\textwidth]{report/figures/GD_momentum.pdf}
     \label{fig:gd-momentum}
 \end{center}
 Fig.\ref{fig:gd-momentum} illustrates how conventional gradient descent converges towards the minimum of the depicted quadratic function. On the right, one can observe gradient descent enhanced with momentum. Although the initial step is similar for both methods, the subsequent steps differ markedly. In the case of gradient descent alone, only the current gradient is considered as the slope. However, when employing gradient descent with momentum, the direction for the next step is determined by an accumulation of the current gradient and the previous gradients, resulting in a steeper descent as the first gradient slopes into negative direction of $x$.\par
@@ -193,7 +193,7 @@ It is important to notice that $m_t$ is initialized at $t=0$, being $m_0$, as a 
 \subsection{Second Moment Vector}
 The second moment vector is to implement an adaptive learning rate in ADAM, by adjusting the learning rate by considering the past gradients. This allows the model to take larger steps when far from the minimum and smaller steps when closer. This is possible, as the squared gradient is considered, meaning when the loss (error in a neural network) is large the learning rate is higher, and vice versa. Furthermore, by adjusting the learning rate this way, the initial learning rate is less relevant as it gets adjusted towards the data automatically. The methods idea was inspired by the Adadelta and RMSprop optimizer.\par
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{report/figures/GD_rmsprop.png}
+    \includegraphics[width=0.8\textwidth]{report/figures/GD_rmsprop.pdf}
     \label{fig:gd-adapt-lr}
 \end{center}\par
 Fig.\ref{fig:gd-adapt-lr} shows a contour plot of the McCormick function, regularly explored for optimization due to its landscape. The graph illustrates the difference between classic GD compared to GD with the adaptive learning rate as implemented by ADAM. This is achieved by dividing the GD Learning rate by the root of the second moment vector. While classic GD is overshooting during the first couple of steps, GD with adaptive learning takes smaller steps, as the initial point is already close to the minimum, which adaptive learning knows due to its dependency on the gradient. This method is especially effective for high dimensional loss functions, where the initial steps of ADAM are usually larger than compared to GD, helping ADAM to potentially navigate the loss function to escape local minima.\par
@@ -213,7 +213,7 @@ Bias correction is performed for both the first and second-moment vector :
     Similarly, the second-moment vector \(v_t\) is corrected by dividing it by \((1 - \beta_2^t)\), where \(\beta_2\) is the exponential decay rate for the second-moment estimates. This adjustment compensates for the underestimation of the second moment, ensuring that the scaled gradient is divided by a more accurate estimate of its variance, leading to more appropriate step sizes.
 \end{enumerate}
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{report/figures/ADAM_bias.png}
+    \includegraphics[width=0.8\textwidth]{report/figures/ADAM_bias.pdf}
     \label{Fig:adam_bias}
 \end{center}
 Fig.\ref{Fig:adam_bias} illustrates the impact of bias correction. Biased ADAM has a stronger tendency towards zero, which in this case leads to more significant overshooting, ultimately ending in slower convergence than unbiased ADAM.
@@ -221,7 +221,7 @@ Fig.\ref{Fig:adam_bias} illustrates the impact of bias correction. Biased ADAM h
 \subsection{Summary Optimization Principles}
 Fig.\ref{fig:adam_vs_gs} visually demonstrates the before-explained principles. The first-moment vector's role is critical in moderating the rate of gradient change, preventing erratic shifts that could derail convergence. Concurrently, the second-moment vector delicately adjusts the learning rate, ensuring it remains optimal as the algorithm approaches the minimum. This orchestrated interplay results in a smoother and more efficient path to convergence compared to traditional gradient descent methods, showcasing ADAM's optimization capability.
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{report/figures/adam_vs_gradientdescent.png}
+    \includegraphics[width=0.8\textwidth]{report/figures/adam_vs_gradientdescent.pdf}
     \label{fig:adam_vs_gs}
 \end{center}
 
