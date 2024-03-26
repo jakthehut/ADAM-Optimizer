@@ -51,20 +51,20 @@
 
 \begin{frame}
     \begin{figure}[h]
-        %\includegraphics[width=10cm]&{presentation/ADAMS/adam_sandler.png}
+        \includegraphics[width=5cm]{presentation/ADAMS/adam_sandler.jpg}
     \end{figure}
 \end{frame}
 
 
 \begin{frame}
     \myheading{Gradient Descent}
-    What is gradient Descent
+    $$\theta_t = \theta_{t-1} - \alpha \nabla_{\theta_{t-1}} J(\theta_{t-1})$$
 \end{frame}
 
 
 \begin{frame}
     \myheading{Stochastic Gradient Descent}
-    What is SGD
+    $$\theta_t = \theta_{t-1} - \alpha \nabla_{\theta_{t-1}} J(\theta_{t-1}; x^{(i)}, y^{(i)})$$
 \end{frame}
 
 \begin{frame}
@@ -197,7 +197,24 @@
     \end{figure}
 \end{frame}
 \begin{frame}
-    
+    \myheading{Results discussion}
+    Adam advantages:
+    \begin{enumerate}
+        \item Fast convergence in terms of accuracy and minimizing loss function
+    \end{enumerate}
+    Adam disadvantages: 
+    \begin{enumerate}
+        \item SGD more general models due to the way weight updates work. 
+    \end{enumerate}
+    Solutions? 
+    \begin{enumerate}
+        \item Use first ADAM and then SGD
+        \item Modify Adam such that the weight updates are separate from lost minimization
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \myheading{Conclusion}
 \end{frame}
 
 \end{document}
