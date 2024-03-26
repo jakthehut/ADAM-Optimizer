@@ -14,7 +14,7 @@ a4paper,
 left=30mm,
 right=30mm,
 top=30mm,
-bottom=20mm
+bottom=40mm
 }
 
 
@@ -52,7 +52,7 @@ bottom=20mm
        BSc Data Science and Society\\
        Central European University\\
        Quellenstraße 51, 1100 Vienna, Austria\\
-       31st of March 2024\\
+       $25^{\text{th}}\text{ of March } 2024$\\
        \vspace{1.5cm}
        \includegraphics[width=0.4\textwidth]{figures/CEU_Logo_RGB_DualColor.png}
        
@@ -247,7 +247,7 @@ $\theta_0$ initial parameters\par
 $m_0=0$ first moment vector initializes as a vector of zeros\par
 $v_0=0$ second moment vector initializes as a vector of zeros
 
-\subsubsection{Algorithm steps}
+\subsubsection{Algorithm steps} \label{Alg_steps}
 Calculate step by step:
 \begin{enumerate}
     \item \textbf{Gradient} \par
@@ -295,14 +295,12 @@ This section evaluates the performance of the ADAM optimizer against other algor
 \subsection{The MNIST-fashion Test Set}
 One of the main benefits of the ADAM algorithm is its ability to optimize loss functions in more complex environments, such as neural networks. To investigate ADAMs efficiency compared to other algorithm, a classification task has been executed using different optimizers. These were ADAM, SGD, ADAgrad and RMSprop. The classifcation task at hand is the \textit{MNIST-Fashion} problem.\par
 
-The MNIST fashion dataset is a data set made by Zalando containing $70 000 \ ,28 \times 28$ images depicting 10 different classes of fashion items. Example can be seen in \textbf{Figure X} These $70 000$ images are then divided into a training set of $60000$ and a test set of $10000$
-Each pixel stores the information of how dark it is ranging 0-255. Overall it is similar to the orginal MNIST dataset, which contains instead contain numbers and which pictures are structured in the same manner, but it is considered a harder classifcation task than the regular MNIST problem, which one  github blog shows can be accurately predicted with just one \hyperlink{https://gist.github.com/dgrtwo/aaef94ecc6a60cd50322c0054cc04478}{pixel}. 
-
+The MNIST fashion dataset is a data set made by Zalando containing $70 000 \ ,28 \times 28$ images depicting 10 different classes of fashion items. Example can be seen in figure \ref{fig:fashion_items} These $70 000$ images are then divided into a training set of $60000$ and a test set of $10000$
+Each pixel stores the information of how dark it is ranging 0-255. Overall it is similar to the orginal MNIST dataset, which contains instead contain numbers and which pictures are structured in the same manner, but it is considered a harder classifcation task than the regular MNIST problem, which one  github blog shows can be accurately predicted with just one \href{https://gist.github.com/dgrtwo/aaef94ecc6a60cd50322c0054cc04478}{pixel}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.42\linewidth]{report/figures/example_items.pdf}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig:fashion_items}
 \end{figure}
 
 \subsection{Model Build}
@@ -333,11 +331,10 @@ In terms of time, all optimizers seem to train the models in linear time, with S
 
 \subsection{Results Discussion}
 
- From the results section, we can gather that ADAM, as outlined in the Method section does indeed provide a fast minimization of the loss function compared to the other optimizers, furthermore, it converges quicker to a higher accuracy when looking at results from both test and train sets. This was achieved in a similar time frame as other optimizers albeit slightly slower, especially for a higher number of epochs. \par
- Therein lies Adam's greatest benefit, the fast minimization. However, the result also shows that although SGD takes more epochs to converge towards its result, it eventually reaches the same accuracy and minimization of the loss function as ADAM. SGD also performs this slightly faster than ADAM in terms of time. SGD also reaches a more consistent higher accuracy on the test set around the 100 epoch mark. It is important to note that this occurs when the accuracy becomes noisy on the graph, probably due to overfitting for error, but this remains consistent with some reporting of SGD creating better-generalized models than ADAM in some cases (Gupta et al., 2021). \par
- To counteract this and increase performance there is the modification AdamW which adjusts the weights separately from the optimization steps, which can lead to better general models that simulate SGD.\par
- Another approach is to begin training a model with Adam for quick convergence and then switch to SGD for the latter training stages to increase performance on unseen data.
-
+ From the results section, we can gather that ADAM, as outlined in the Method section does indeed provide a fast minimization of the loss function compared to the other optimizers, furthermore, it converges quicker to a higher accuracy when looking at results from both test and train sets. This was achieved in a similar time frame as other optimizers albeit slightly slower, especially for a higher number of epochs. \par From the results section, we can gather that ADAM, as outlined in the Method section does indeed provide a fast minimization of the loss function compared to the other optimizers, furthermore, it converges quicker to a higher accuracy when looking at results from both test and train sets. This was achieved in a similar time frame as other optimizers albeit slightly slower, especially for a higher number of epochs. \par
+ Therein lies Adam's greatest benefit, the fast minimization. However, the result also shows that although SGD takes more epochs to converge towards its result, it eventually reaches the same accuracy and minimization of the loss function as ADAM. SGD also performs this slightly faster than ADAM in terms of time. SGD also reaches a more consistent higher accuracy on the test set around the 100 epoch mark. It is important to note that this occurs when the accuracy becomes noisy on the graph, probably due to overfitting for error, but this remains consistent with some reporting of SGD creating better-generalized models than ADAM in image classification tasks (Gupta et al., 2021). Since SGD updates the weights of parameters based solely on the gradient descent of the single data point or batch, as can be seen in equation \ref{eq:SGD}. The weights of the function will hence grow less the closer the function gets to minimizing the loss functions since the gradient becomes progressively smaller. ADAM on the other hand uses the momentum of the previous steps to determine the new weight as can be seen in \ref{Alg_steps}. This risks the weights being overshot if the gradient is increasing in one direction, which can lead to larger weights and subsequently to a more complex, less general model. This holds especially true when performing a large amount of epochs since the effect of the momentum can magnify the step sizes, even as the optimizer approaches the optimal point of the loss function. 
+ 
+\newpage
 \section{Conclusion}
 
 In conclusion, our investigation into the ADAM optimization algorithm highlights its ability to navigate the complex landscapes of loss functions within neural network architectures efficiently. By adeptly combining the mechanisms of RMSprop and Momentum within the stochastic gradient descent framework, ADAM exhibits remarkable proficiency in managing dynamic learning rates and leveraging momentum to expedite convergence. Our comparative analysis, particularly within the context of the MNIST-fashion classification task, further underscores ADAM's effectiveness. It outperforms traditional optimizers like SGD, ADAgrad, and RMSprop in minimizing entropy loss and enhancing test set accuracy, despite occasional preferences for the simpler, more generalizable SGD or the modified ADAMW in certain scenarios. This study affirms ADAM's robustness and adaptability across diverse machine-learning tasks.
