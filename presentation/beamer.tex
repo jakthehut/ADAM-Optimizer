@@ -69,7 +69,7 @@
     $$Next Step = constant \cdot last step + (1-constant) \cdot Gradient$$
     
     \begin{figure}[h]
-        \includegraphics[width=8cm]{report/figures/GD_momentum.png}
+        \includegraphics[width=8cm]{report/figures/GD_momentum.pdf}
     \end{figure}
 \end{frame}
 
@@ -80,7 +80,7 @@
     $$NextStepSize = \frac{LearningRate}{Gradient^2} $$
     
     \begin{figure}[h]
-        \includegraphics[width=8cm]{report/figures/GD_rmsprop.png}
+        \includegraphics[width=8cm]{report/figures/GD_rmsprop.pdf}
     \end{figure}
 \end{frame}
 
@@ -90,7 +90,7 @@
     Both methods are initialized as zeros.
     
     \begin{figure}[h]
-        \includegraphics[width=8cm]{report/figures/ADAM_bias.png}
+        \includegraphics[width=8cm]{report/figures/ADAM_bias.pdf}
     \end{figure}
 \end{frame}
 
@@ -106,7 +106,7 @@
     \end{enumerate}
     
     \begin{figure}[h]
-        \includegraphics[width=8cm]{report/figures/adam_vs_gradientdescent.png}
+        \includegraphics[width=8cm]{report/figures/adam_vs_gradientdescent.pdf}
     \end{figure}
 \end{frame}
 
@@ -150,12 +150,37 @@
 \begin{frame}
     \myheading{Model build}
     \begin{enumerate}
-        \item{Training set consisting of 60000 and and test set of 10000}
+        \item{Training set consisting of 60000 and test set of 10000}
         \item First layer: 128 neruons and uses ReLu acivation function
         \item Second layer: 10 (one for each category) and uses soft max function to get the probabilities of each class
         \item Loss function: SparseCategoricalCrossEntropy
         \item One model for each optimizer, Adagrad, ADAM, SGD and RMSprop. 
     \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \title{Comparisons metric}
+    For every epoch:
+    \begin{enumerate}
+        \item Time
+        \item Accuracy on test set 
+        \item Accuracy on training set
+        \item Loss function minimization
+    \end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+    \begin{figure}[h]
+        \includegraphics[width=12cm]{report/figures/accuracy_training_and_entropy.pdf}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \begin{figure}[h]
+        \includegraphics[width=12cm]{report/figures/time_and_accuracy.pdf}
+    \end{figure}
 \end{frame}
 
 \end{document}
