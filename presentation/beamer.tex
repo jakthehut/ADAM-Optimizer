@@ -130,4 +130,32 @@
 \begin{frame}
     \myheading{Advantages of ADAM}
 \end{frame}
+
+\begin{frame}
+    \myheading{Test Set MNIST-Fashion}
+    \begin{enumerate}
+        \item 70000, 28x28 images, pixel darkness value ranging 0-255 (normalized before prediction)
+        \item 10 different classes of fashion items: T-shirt/top, Trouser, Pullover, Dress, Coat,
+               Sandal, Shirt, Sneaker, Bag, Ankle boot.
+        \item Advantageous to the regular MNIST data set. 
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+     \begin{figure}[h]
+        \includegraphics[width=8cm]{report/figures/example_items.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \myheading{Model build}
+    \begin{enumerate}
+        \item{Training set consisting of 60000 and and test set of 10000}
+        \item First layer: 128 neruons and uses ReLu acivation function
+        \item Second layer: 10 (one for each category) and uses soft max function to get the probabilities of each class
+        \item Loss function: SparseCategoricalCrossEntropy
+        \item One model for each optimizer, Adagrad, ADAM, SGD and RMSprop. 
+    \end{enumerate}
+\end{frame}
+
 \end{document}
