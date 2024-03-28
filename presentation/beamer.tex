@@ -40,16 +40,36 @@
 \begin{document}
 
 \begin{frame}
+    \begin{figure}[h]
+        \includegraphics[width=11cm]{presentation/ADAMS/historical.jpg}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
     \titlepage
 \end{frame}
 
+
 \begin{frame}
+    \myheading{Gradient Descent}
+    $$\theta_t = \theta_{t-1} - \alpha \nabla_{\theta_{t-1}} J(\theta_{t-1})$$
     \begin{figure}[h]
-        \includegraphics[width=10cm]{presentation/ADAMS/historical.jpg}
+        \includegraphics[width=10cm]{presentation/ADAMS/topology.jpg}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \myheading{Stochastic Gradient Descent}
+    $$\theta_t = \theta_{t-1} - \alpha \nabla_{\theta_{t-1}} J(\theta_{t-1}; x^{(i)}, y^{(i)})$$
+    \begin{figure}[h]
+        \includegraphics[width=10cm]{presentation/ADAMS/topology.jpg}
     \end{figure}
 \end{frame}
 
 \begin{frame}
+    \myheading{What is ADAM doing?}
     \begin{figure}[h]
         \includegraphics[width=5cm]{presentation/ADAMS/adam_sandler.jpg}
     \end{figure}
@@ -57,31 +77,25 @@
 
 
 \begin{frame}
-    \myheading{Gradient Descent}
-    $$\theta_t = \theta_{t-1} - \alpha \nabla_{\theta_{t-1}} J(\theta_{t-1})$$
-\end{frame}
-
-
-\begin{frame}
-    \myheading{Stochastic Gradient Descent}
-    $$\theta_t = \theta_{t-1} - \alpha \nabla_{\theta_{t-1}} J(\theta_{t-1}; x^{(i)}, y^{(i)})$$
-\end{frame}
-
-\begin{frame}
-    \myheading{What is ADAM doing?}
-\end{frame}
-\begin{frame}
     \myheading{Improving Stochastic Gradient Descent for Training Neural Networks.}
+    by adapting
+    \begin{enumerate}
+        \item First Moment Vector
+        \item Second Moment Vector
+        \item Bias Correction
+    \end{enumerate}
 \end{frame}
 
 
 \begin{frame}
     \myheading{Momentum Method\\First Moment Vector}
     Step direction is dependent on current and past gradients.
-    $$Next Step = constant \cdot last step + (1-constant) \cdot Gradient$$
+    \tiny
+    $$Biased First Moment Vector = constant \cdot LastFirstMomentVector + (1-constant) \cdot Gradient$$
     
+    $$Next Step = Learning Rate \cdot First Moment Vector  $$
     \begin{figure}[h]
-        \includegraphics[width=8cm]{report/figures/GD_momentum.pdf}
+        \includegraphics[width=10cm]{report/figures/GD_momentum.pdf}
     \end{figure}
 \end{frame}
 
@@ -89,7 +103,9 @@
 \begin{frame}
     \myheading{Adaptive Learning Rate\\Second Moment Vector}
     Step Length is dependent on magnitude of the gradient
-    $$NextStepSize = \frac{LearningRate}{Gradient^2} $$
+    \tiny
+    $$Biased Second Moment Vector = constant \cdot LastSecondMomentVector + (1-constant) \cdot Gradient^2$$
+    $$NextStep = \frac{LearningRate}{SecondMomentVector + \epsilon} \cdot Gradient $$
     
     \begin{figure}[h]
         \includegraphics[width=8cm]{report/figures/GD_rmsprop.pdf}
@@ -116,9 +132,10 @@
         \item Adaptive Learning Rate
         \item Bias correction
     \end{enumerate}
-    
+    \newline
+    $$\theta_t = \frac{LearningRate}{Second Moment Vector(\theta_{t-1}) + \epsilon} \cdot FirstMomentVector(\theta_{t-1})$$
     \begin{figure}[h]
-        \includegraphics[width=8cm]{report/figures/adam_vs_gradientdescent.pdf}
+        \includegraphics[width=6cm]{report/figures/adam_vs_gradientdescent.pdf}
     \end{figure}
 \end{frame}
 
@@ -141,6 +158,9 @@
 
 \begin{frame}
     \myheading{Advantages of ADAM}
+    \begin{figure}[h]
+        \includegraphics[width=5cm]{presentation/ADAMS/adam_sandler.jpg}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -209,12 +229,15 @@
     Solutions? 
     \begin{enumerate}
         \item Use first ADAM and then SGD
-        \item Modify Adam such that the weight updates are separate from lost minimization
+        \item Modify Adam such that the weight updates are separate from loss minimization
     \end{enumerate}
 \end{frame}
 
 \begin{frame}
     \myheading{Conclusion}
+    \begin{figure}[h]
+        \includegraphics[width=5cm]{presentation/ADAMS/adam_sandler.jpg}
+    \end{figure}
 \end{frame}
 
 \end{document}
